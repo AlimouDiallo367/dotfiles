@@ -1,22 +1,21 @@
-current_user=$(whoami)
-node_version=24
+#! /bin/bash
 
-if which dnf &>/dev/null; then
-  as_root <<_
-    curl -fsSL https://rpm.nodesource.com/setup_$node_version.x | bash - >/dev/null
-    dnf install -y nodejs
-    if ! grep -Fxq "fs.inotify.max_user_watches=524288" /etc/sysctl.conf; then
-      echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf && sysctl -p >/dev/null
-    fi
-    su $current_user -lc "mkdir -p /home/$current_user/.npm-global/lib; npm config set prefix /home/$current_user/.npm-global"
-_
-elif which apt-get &>/dev/null; then
-  as_root <<_
-    wget -q -O - https://deb.nodesource.com/setup_$node_version.x | bash - >/dev/null
-    apt-get install -y nodejs
-    if ! grep -Fxq "fs.inotify.max_user_watches=524288" /etc/sysctl.conf; then
-      echo "fs.inotify.max_user_watches=524288" >> /etc/sysctl.conf && sysctl -p >/dev/null
-    fi
-    su $current_user -lc "mkdir -p /home/$current_user/.npm-global/lib; npm config set prefix /home/$current_user/.npm-global"
-_
+export NVM_DIR="$HOME/.nvm"
+
+# Install NVM if not already present
+if ! [ -d "$NVM_DIR" ]; then
+  echo "  > Installing NVM..."
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+fi
+
+# Load NVM in the current subshell to provision Node.js
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+  \. "$NVM_DIR/nvm.sh"
+
+  # Install Node.js LTS if node is missing
+  if ! which node &>/dev/null; then
+    echo "  > Installing Node.js LTS release..."
+    nvm install --lts
+    nvm alias default 'lts/*'
+  fi
 fi

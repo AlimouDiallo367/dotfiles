@@ -2,7 +2,7 @@
 # Fedora toolchain and CLI utilities
 if which dnf &>/dev/null; then
   as_root <<_
-    dnf groupinstall -y 'Development Tools'
+    dnf groupinstall -y @development-tools 
     dnf install -y \
       curl \
       wget \

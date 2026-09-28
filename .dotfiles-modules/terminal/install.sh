@@ -1,5 +1,3 @@
-#! /bin/bash
-
 # Detect package manager and register base terminal and build dependencies
 # Fedora toolchain and CLI utilities
 if which dnf &>/dev/null; then

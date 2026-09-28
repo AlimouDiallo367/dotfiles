@@ -1,5 +1,3 @@
-#! /bin/bash
-
 # Set default editor prioritizing Neovim over Vim
 if which nvim &>/dev/null; then
   export EDITOR="nvim"

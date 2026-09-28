@@ -104,7 +104,7 @@ if (( ${#config_modules[@]} != 0)); then
 fi
 
 # Set base default modules
-modules=('base')
+modules=('terminal')
 
 # Merge requested modules and keep unique entries
 modules+=("${requested_modules[@]}")
